@@ -1,0 +1,4 @@
+﻿  DIPTeamProject_Team8Dlg.cpp
+C:\Users\YULA\source\repos\DIPTeamProject_Team8\DIPTeamProject_Team8\DIPTeamProject_Team8Dlg.cpp(127,10): warning C4477: 'printf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'cv::String'입니다.
+C:\Users\YULA\source\repos\DIPTeamProject_Team8\DIPTeamProject_Team8\DIPTeamProject_Team8Dlg.cpp(209,6): warning C4101: 'color' :참조되지 않은 지역 변수입니다.
+  DIPTeamProject_Team8.vcxproj -> C:\Users\YULA\source\repos\DIPTeamProject_Team8\x64\Debug\DIPTeamProject_Team8.exe

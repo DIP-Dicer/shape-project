@@ -14,7 +14,6 @@
 #define IDC_PIC_VIEW3                   1011
 #define IDC_PIC_VIEW4                   1012
 #define IDC_STATIC1                     1014
-#define IDC_TEXT1                       1014
 #define IDC_STATIC2                     1015
 #define IDC_STATIC3                     1016
 #define IDC_STATIC4                     1017

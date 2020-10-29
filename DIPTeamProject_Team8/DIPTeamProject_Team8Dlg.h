@@ -9,6 +9,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
 using namespace cv;
+using namespace std;
 
 
 // CDIPTeamProjectTeam8Dlg 대화 상자
@@ -28,11 +29,12 @@ public:
 
 public:
 	Mat m_matImage1, m_matImage2, m_matImage3, m_matImage4; //이미지 정보를 담고 있는 객체
+	Mat imgtemp1, imgtemp2, imgtemp3, imgtemp4;
 	BITMAPINFO* m_pBitmapInfo; //Bitmap 정보를 담고 있는 구조체
 
 	Mat BlackWhite(Mat m_matImage);
-	void CreateBitmapInfo(int w, int h); //Bitmap 정보를 생성하는 함수
-	void DrawImage(int id); //그리는 작업을 수행하는 함수
+	void CreateBitmapInfo(int w, int h, int bpp); //Bitmap 정보를 생성하는 함수
+	void DrawImage(int id, Mat m_matImage); //그리는 작업을 수행하는 함수
 	void Distinguish(Mat m_matImage, int text);
 
 

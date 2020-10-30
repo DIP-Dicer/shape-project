@@ -1,5 +1,2 @@
-﻿  DIPTeamProject_Team8.cpp
-  DIPTeamProject_Team8Dlg.cpp
-C:\Users\YULA\source\repos\DIPTeamProject_Team8\DIPTeamProject_Team8\DIPTeamProject_Team8Dlg.cpp(209,6): warning C4101: 'color' :참조되지 않은 지역 변수입니다.
-  코드를 생성하고 있습니다...
-  DIPTeamProject_Team8.vcxproj -> C:\Users\YULA\source\repos\DIPTeamProject_Team8\x64\Debug\DIPTeamProject_Team8.exe
+﻿  DIPTeamProject_Team8Dlg.cpp
+  DIPTeamProject_Team8.vcxproj -> C:\Users\이민지\Desktop\과제\영상처리\팀플\DIPTeamProject_Team8\x64\Debug\DIPTeamProject_Team8.exe

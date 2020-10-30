@@ -182,14 +182,14 @@ void CDIPTeamProjectTeam8Dlg::DrawImage(int id, Mat m_matImage) { //각 Picture 
 	//SetStretchBltMode(dc.GetSafeHdc(), COLORONCOLOR);
 	dc.SetStretchBltMode(COLORONCOLOR);
 
-	for (int x = 0; x < 20; x++) { //이건 이미지 출력할 때 처음 좌표 볼라구 넣어놓은 거. 자꾸 오류나서!!ㅠ힝구
+	/*for (int x = 0; x < 20; x++) { //이건 이미지 출력할 때 처음 좌표 볼라구 넣어놓은 거. 자꾸 오류나서!!ㅠ힝구
 		for (int y = 0; y < 20; y++) {
 			if (y<5)
 				m_matImage.at<Vec3b>(x, y) = Vec3b(0, 0, 255); //빨강
 			else
 				m_matImage.at<Vec3b>(x, y) = Vec3b(255, 0, 0); //파랑
 		}
-	}
+	}*/
 
 	StretchDIBits(dc.GetSafeHdc(), 0, 0, rect.Width(), rect.Height(), 0, 0, m_matImage.cols, m_matImage.rows, m_matImage.data, m_pBitmapInfo, DIB_RGB_COLORS, SRCCOPY);
 	//Picture control의 왼쪽 아래 좌표가 (0, 0)이고 가로, 세로 길이가 각각 rect.Width()와 rect.Height()
@@ -197,10 +197,10 @@ void CDIPTeamProjectTeam8Dlg::DrawImage(int id, Mat m_matImage) { //각 Picture 
 }
 
 void CDIPTeamProjectTeam8Dlg::OnBnClickedButton2() { //두번째 버튼 클릭하면 (색상값으로 0이나 255만 갖고 있는 Mat 이미지랑 text box를 파라미터로) Distinguish 함수 호출
-	Distinguish(BlackWhite(m_matImage1), IDC_STATIC1);
-	Distinguish(BlackWhite(m_matImage2), IDC_STATIC2);
-	Distinguish(BlackWhite(m_matImage3), IDC_STATIC3);
-	Distinguish(BlackWhite(m_matImage4), IDC_STATIC4);
+	Distinguish(BlackWhite(imgtemp1), IDC_STATIC1);
+	Distinguish(BlackWhite(imgtemp2), IDC_STATIC2);
+	Distinguish(BlackWhite(imgtemp3), IDC_STATIC3);
+	Distinguish(BlackWhite(imgtemp4), IDC_STATIC4);
 }
 
 void CDIPTeamProjectTeam8Dlg::Distinguish(Mat m_matImage, int text) { //삼각형 사각형 판별하기
@@ -208,7 +208,110 @@ void CDIPTeamProjectTeam8Dlg::Distinguish(Mat m_matImage, int text) { //삼각�
 	int height = m_matImage.rows;
 	int color;
 
-	//민지가 짠 코드 넣을 곳
+	int minX = width - 1;
+	int minY = height - 1;
+	int maxX = 0;
+	int maxY = 0;
 
-	SetDlgItemText(text, _T("삼각형인가 사각형인가")); //삼각형/사각형 판별되면 static text box 텍스트 바꿈
+	//triangle, square를 구성하는 pixel중 x의 최소/최대, y의 최소/최대 찾음.
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			color = m_matImage.at<Vec3b>(x, y)[0];
+
+			if (color == 0) {
+				if (x < minX) {
+					minX = x;
+				}
+				if (x > maxX) {
+					maxX = x;
+				}
+				if (y < minY) {
+					minY = y;
+				}
+				if (y > maxY) {
+					maxY = y;
+				}
+			}
+		}
+	}
+
+	//한 픽셀 정도는 뭉뚝할 수 있으므로, 그런 경우의 처리를 위해.
+	int dx[] = { 0,0,0,1,-1,1,-1,1,-1 };
+	int dy[] = { 0,1,-1,0,0,1,1,-1,-1 };
+
+	for (int i = 0; i < 9; i++) {
+		int nx = minX + dx[i];
+		int ny = minY + dy[i];
+		int temp;
+		if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+			temp = m_matImage.at<Vec3b>(nx, ny)[0];
+			if (temp == 0) {
+				m_matImage.at<Vec3b>(minX, minY)[0] = 0;
+				break;
+			}
+		}
+	}
+
+	for (int i = 0; i < 9; i++) {
+		int nx = minX + dx[i];
+		int ny = maxY + dy[i];
+		int temp;
+		if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+			temp = m_matImage.at<Vec3b>(nx, ny)[0];
+			if (temp == 0) {
+				m_matImage.at<Vec3b>(minX, maxY)[0] = 0;
+				break;
+			}
+		}
+	}
+
+	for (int i = 0; i < 9; i++) {
+		int nx = maxX + dx[i];
+		int ny = minY + dy[i];
+		int temp;
+		if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+			temp = m_matImage.at<Vec3b>(nx, ny)[0];
+			if (temp == 0) {
+				m_matImage.at<Vec3b>(maxX, minY)[0] = 0;
+				break;
+			}
+		}
+	}
+
+	for (int i = 0; i < 9; i++) {
+		int nx = maxX + dx[i];
+		int ny = maxY + dy[i];
+		int temp;
+		if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+			temp = m_matImage.at<Vec3b>(nx, ny)[0];
+			if (temp == 0) {
+				m_matImage.at<Vec3b>(maxX, maxY)[0] = 0;
+				break;
+			}
+		}
+	}
+
+	//x, y 최소, 최대의 조합으로 만들어진 pixel의 색상 값을 가져온다.
+	int color1 = m_matImage.at<Vec3b>(minX, minY)[0];
+	int color2 = m_matImage.at<Vec3b>(minX, maxY)[0];
+	int color3 = m_matImage.at<Vec3b>(maxX, minY)[0];
+	int color4 = m_matImage.at<Vec3b>(maxX, maxY)[0];
+
+	//triangle 0, sqaure 1
+	int flag = 0;
+
+	//square은 모든 꼭짓점이 x,y 최소/최대 점의 조합에 있거나 / 모두 없거나의 경우다.
+	if (color1 == 0 && color2 == 0 && color3 == 0 && color4 == 0) {
+		flag = 1;
+	}
+	else if (color1 == 255 && color2 == 255 && color3 == 255 && color4 == 255) {
+		flag = 1;
+	}
+
+	if (flag) {
+		SetDlgItemText(text, _T("square")); //삼각형/사각형 판별되면 static text box 텍스트 바꿈
+	}
+	else {
+		SetDlgItemText(text, _T("triangle"));
+	}
 }

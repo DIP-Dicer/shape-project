@@ -8,6 +8,7 @@
 #include <opencv2/core/types_c.h>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <vector>
 using namespace cv;
 using namespace std;
 

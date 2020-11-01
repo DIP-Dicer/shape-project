@@ -239,7 +239,27 @@ void CDIPTeamProjectTeam8Dlg::Distinguish(Mat m_matImage, int text) { //삼각�
 	int dx[] = { 0,0,0,1,-1,1,-1,1,-1 };
 	int dy[] = { 0,1,-1,0,0,1,1,-1,-1 };
 
-	for (int i = 0; i < 9; i++) {
+	vector<pair<int, int>> comb = { {minX, minY}, {minX, maxY}, {maxX, minY}, {maxX, maxY} };
+
+	for (auto &p : comb) {
+		int cx = p.first;
+		int cy = p.second;
+		for (int i = 0; i < 9; i++) {
+			int nx = cx + dx[i];
+			int ny = cy + dy[i];
+			int temp;
+			if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+				temp = m_matImage.at<Vec3b>(nx, ny)[0];
+				if (temp == 0) {
+					m_matImage.at<Vec3b>(cx, cy)[0] = 0;
+					break;
+				}
+			}
+		}
+	}
+
+
+	/*for (int i = 0; i < 9; i++) {
 		int nx = minX + dx[i];
 		int ny = minY + dy[i];
 		int temp;
@@ -289,10 +309,10 @@ void CDIPTeamProjectTeam8Dlg::Distinguish(Mat m_matImage, int text) { //삼각�
 				break;
 			}
 		}
-	}
+	}*/
 
 	//x, y 최소, 최대의 조합으로 만들어진 pixel의 색상 값을 가져온다.
-	int color1 = m_matImage.at<Vec3b>(minX, minY)[0];
+	/*int color1 = m_matImage.at<Vec3b>(minX, minY)[0];
 	int color2 = m_matImage.at<Vec3b>(minX, maxY)[0];
 	int color3 = m_matImage.at<Vec3b>(maxX, minY)[0];
 	int color4 = m_matImage.at<Vec3b>(maxX, maxY)[0];
@@ -306,9 +326,22 @@ void CDIPTeamProjectTeam8Dlg::Distinguish(Mat m_matImage, int text) { //삼각�
 	}
 	else if (color1 == 255 && color2 == 255 && color3 == 255 && color4 == 255) {
 		flag = 1;
+	}*/
+
+	//int colors[4];
+	int cnt = 0;
+
+	for (int i = 0; i < 4; i++) {
+		int color = m_matImage.at<Vec3b>(comb[i].first, comb[i].second)[0];
+		if (color == 0) {
+			cnt++;
+		}
+		else if (color == 255) {
+			cnt--;
+		}
 	}
 
-	if (flag) {
+	if (cnt == 4 || cnt == -4) {
 		SetDlgItemText(text, _T("square")); //삼각형/사각형 판별되면 static text box 텍스트 바꿈
 	}
 	else {

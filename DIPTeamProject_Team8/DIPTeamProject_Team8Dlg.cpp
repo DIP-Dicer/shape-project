@@ -28,7 +28,6 @@ BEGIN_MESSAGE_MAP(CDIPTeamProjectTeam8Dlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CDIPTeamProjectTeam8Dlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CDIPTeamProjectTeam8Dlg::OnBnClickedButton2)
-	ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 BOOL CDIPTeamProjectTeam8Dlg::OnInitDialog()
@@ -37,6 +36,8 @@ BOOL CDIPTeamProjectTeam8Dlg::OnInitDialog()
 
 	SetIcon(m_hIcon, TRUE);
 	SetIcon(m_hIcon, FALSE);
+
+	SetupForDynamicLayout();
 
 	return TRUE;
 }
@@ -68,6 +69,40 @@ HCURSOR CDIPTeamProjectTeam8Dlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
+void CDIPTeamProjectTeam8Dlg::SetupForDynamicLayout() {
+	this->EnableDynamicLayout();
+
+	//이동 조정
+	auto move_none = CMFCDynamicLayout::MoveSettings{};
+	auto move_both_50 = CMFCDynamicLayout::MoveSettings{};
+	move_both_50.m_nXRatio = 50;
+	move_both_50.m_nYRatio = 50;
+	auto move_both_100 = CMFCDynamicLayout::MoveSettings{};
+	move_both_100.m_nXRatio = 100;
+	move_both_100.m_nYRatio = 100;
+	
+	//크기 조정
+	auto size_none = CMFCDynamicLayout::SizeSettings{};
+	auto size_both_25 = CMFCDynamicLayout::SizeSettings{};
+	size_both_25.m_nXRatio = 25;
+	size_both_25.m_nYRatio = 25;
+
+	auto manager = this->GetDynamicLayout();
+	manager->Create(this);
+	
+	manager->AddItem(IDC_PIC_VIEW1, move_both_50, size_both_25);
+	manager->AddItem(IDC_PIC_VIEW2, move_both_50, size_both_25);
+	manager->AddItem(IDC_PIC_VIEW3, move_both_50, size_both_25);
+	manager->AddItem(IDC_PIC_VIEW4, move_both_50, size_both_25);
+	manager->AddItem(IDC_STATIC1, move_both_50, size_both_25);
+	manager->AddItem(IDC_STATIC2, move_both_50, size_both_25);
+	manager->AddItem(IDC_STATIC3, move_both_50, size_both_25);
+	manager->AddItem(IDC_STATIC4, move_both_50, size_both_25);
+	manager->AddItem(IDC_BUTTON1, move_both_50, size_both_25);
+	manager->AddItem(IDC_BUTTON2, move_both_50, size_both_25);
+	manager->AddItem(IDOK, move_both_100, size_none);
+	manager->AddItem(IDCANCEL, move_both_100, size_none);
+}
 
 Mat CDIPTeamProjectTeam8Dlg::BlackWhite(Mat m_matImage) { //도형 부분을 검정색으로 바꾼 mat 이미지를 반환
 	int width = m_matImage.cols;
@@ -89,13 +124,6 @@ Mat CDIPTeamProjectTeam8Dlg::BlackWhite(Mat m_matImage) { //도형 부분을 검
 		}
 	}
 	return m_matImg;
-}
-
-void CDIPTeamProjectTeam8Dlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI) {
-	lpMMI->ptMinTrackSize.x = 710;
-	lpMMI->ptMinTrackSize.y = 635;
-	lpMMI->ptMaxTrackSize.x = 745;
-	lpMMI->ptMaxTrackSize.y = 666;
 }
 
 void CDIPTeamProjectTeam8Dlg::OnBnClickedButton1() { //첫번째 버튼 클릭하면 picture control에 이미지 출력

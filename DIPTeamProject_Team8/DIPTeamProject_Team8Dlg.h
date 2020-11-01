@@ -28,6 +28,7 @@ public:
 	Mat m_matImageTemp1, m_matImageTemp2, m_matImageTemp3, m_matImageTemp4;
 	BITMAPINFO* m_pBitmapInfo;
 
+	void SetupForDynamicLayout();
 	Mat BlackWhite(Mat m_matImage);
 	void CreateBitmapInfo(int w, int h);
 	void DrawImage(int id, Mat m_matImage);
@@ -44,5 +45,4 @@ public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
 	CStatic mText1, mText2, mText3, mText4;
-	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 };

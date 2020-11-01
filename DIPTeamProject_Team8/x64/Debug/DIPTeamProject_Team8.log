@@ -1,2 +1,6 @@
-﻿  DIPTeamProject_Team8Dlg.cpp
+﻿  pch.cpp
+  DIPTeamProject_Team8.cpp
+  DIPTeamProject_Team8Dlg.cpp
+  코드를 생성하고 있습니다...
+  LINK : C:\Users\이민지\Desktop\과제\영상처리\팀플\DIPTeamProject_Team8\x64\Debug\DIPTeamProject_Team8.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
   DIPTeamProject_Team8.vcxproj -> C:\Users\이민지\Desktop\과제\영상처리\팀플\DIPTeamProject_Team8\x64\Debug\DIPTeamProject_Team8.exe
